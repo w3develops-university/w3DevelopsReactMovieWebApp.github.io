@@ -1,7 +1,7 @@
 import React from 'react';
 import './LoadMoreBtn.css';
 
-const LoadMoreBtn (props) => {
+const LoadMoreBtn = (props) => {
     return(
         <div>
             LoadMoreBtn

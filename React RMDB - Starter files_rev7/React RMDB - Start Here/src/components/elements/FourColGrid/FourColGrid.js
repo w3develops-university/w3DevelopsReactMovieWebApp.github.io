@@ -1,7 +1,7 @@
 import React from 'react';
 import './FourColGrid.css';
 
-const FourColGrid (props) => {
+const FourColGrid = (props) => {
     return(
         <div>
             FourColGrid

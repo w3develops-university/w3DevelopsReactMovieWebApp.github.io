@@ -1,7 +1,7 @@
 import React from 'react';
 import './MovieThumb.css';
 
-const MovieThumb (props) => {
+const MovieThumb = (props) => {
     return(
         <div>
             MovieThumb
