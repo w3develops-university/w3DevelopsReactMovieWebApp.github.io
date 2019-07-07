@@ -12,7 +12,7 @@ import './Home.css';
 class Home extends Component {
     state = {
         movies: [],
-        heroimage: null,
+        heroImage: null,
         loading: false,
         currentPage: 0,
         totalPages: 0,
@@ -22,6 +22,24 @@ class Home extends Component {
     componentDidMount(){
         this.setState({ loading: true });
         const endpoint = `${API_URL}movie/popular?apikey=${API_KEY }&language=en-US&page=1`;
+        this.fetchItems(endpoint);
+    }
+
+    searchItems = (searchTerm) => {
+        console.log(searchTerm);
+        let endpoint = '';
+        this.setState({
+            movies: [],
+            loading: true,
+            searchTerm
+        })
+
+        if(searchTerm ===''){
+            endpoint = `${API_URL}movie/popular?apikey=${API_KEY }&language=en-US&page=1`
+        } else {
+            endpoint = `${API_URL}search/movie?apikey=${API_KEY}&language=en-US&queary=${searchTerm}`
+        }
+
         this.fetchItems(endpoint);
     }
 
@@ -43,7 +61,7 @@ class Home extends Component {
         .then(result => {
             this.setState({
                 movies: [...this.state.movies, ...result.results],
-                heroImage: this.state.heroimage || result.results,
+                heroImage: this.state.heroImage || result.results,
                 loading: false,
                 currentPage: result.pages,
                 totalPages: result.total_pages
@@ -56,10 +74,10 @@ class Home extends Component {
             {this.state.heroImage ?
             <div>
                 <HeroImage 
-                image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}this.state.heroImage.backdrop_path`}
+                image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}${this.state.heroImage.backdrop_path}`}
                 title={this.state.heroImage.orginal_title}
-                text={this.state.heroImage.overview}/>
-                <SearchBar />
+                text={this.state.heroImage.overview} />
+                <SearchBar callback={this.searchItems} />
             </div> : null }
                 <FourColGrid />
                 <Spinner />
