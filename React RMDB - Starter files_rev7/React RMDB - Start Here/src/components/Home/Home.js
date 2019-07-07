@@ -16,7 +16,7 @@ class Home extends Component {
         loading: false,
         currentPage: 0,
         totalPages: 0,
-        searchTearm: ''
+        searchTerm: ''
     }
     
     componentDidMount(){
@@ -25,24 +25,47 @@ class Home extends Component {
         this.fetchItems(endpoint);
     }
 
+    loadMoreItems = () => {
+        let endpoint = '';
+        this.setState({ loading: true })
+
+        if (this.state.searchTerm === '') {
+            endpoint = `${API_URL}movie/popular?apikey:${API_KEY}&language=en-US&page${this.state.currentPage + 1}`;
+        } else {
+            endpoint = `${API_URL}search/movie?apikey:${API_KEY}&language=en-US&query${this.state.searchTerm}&page=${this.state.currentPage + 1}`;
+            this.fetchItems(endpoint);
+        }
+    }
+
     fetchItems = (endpoint) => {
         fetch(endpoint)
-            .then(result => result.json())
-            .then(result => {
-                console.log(result)
+        .then(result => result.json())
+        .then(result => {
+            this.setState({
+                movies: [...this.state.movies, ...result.results],
+                heroImage: this.state.heroimage || result.results,
+                loading: false,
+                currentPage: result.pages,
+                totalPages: result.total_pages
             })
+        })
     }
     render() {
         return (
             <div className='rmdb-home'>
-                <HeroImage />
+            {this.state.heroImage ?
+            <div>
+                <HeroImage 
+                image={`${IMAGE_BASE_URL}${BACKDROP_SIZE}this.state.heroImage.backdrop_path`}
+                title={this.state.heroImage.orginal_title}
+                text={this.state.heroImage.overview}/>
                 <SearchBar />
+            </div> : null }
                 <FourColGrid />
                 <Spinner />
                 <LoadMoreBtn />
 
             </div>
-            // comment
         )
     }
 }
