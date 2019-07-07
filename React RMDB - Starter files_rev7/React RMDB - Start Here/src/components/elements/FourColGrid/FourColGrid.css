@@ -6,15 +6,12 @@
 .rmdb-grid-content {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 40px;
-  grid-row-gap: 40px;
+  grid-gap: 40px;
+  position: relative;
 }
 
 .rmdb-grid-element {
-  background: #353535;
-  max-height: 430px;
   animation: animateGrid 0.5s;
-  overflow: hidden;
 }
 
 @keyframes animateGrid {
@@ -26,16 +23,18 @@
   }
 }
 
-@media screen and (max-width: 720px) {
+@media screen and (max-width: 768px) {
   .rmdb-grid-content {
-    grid-template-columns: auto auto;
-  }
-
-  .rmdb-grid-element:nth-child(2n+2) {
-    margin-right: 0;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .rmdb-grid h1 {
     font-size:22px;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .rmdb-grid-content {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
