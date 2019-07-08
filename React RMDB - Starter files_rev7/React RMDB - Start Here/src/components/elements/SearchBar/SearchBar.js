@@ -4,13 +4,13 @@ import './SearchBar.css';
 
 class SearchBar extends Component {
     state = {
-        value: '',
+        value: ''
     }
 
     timeout = null;
 
     doSearch = (event) => {
-        this.setState({ value: event.target.value })
+        this.setState({ value: event.target.value });
         clearTimeout(this.timeout);
 
         this.timeout = setTimeout( () => { 
@@ -20,8 +20,8 @@ class SearchBar extends Component {
 
     render(){
         return(
-            <div className="rmdb-searchBar">
-                <div className="rmdb-searchBar-content ">
+            <div className="rmdb-searchbar">
+                <div className="rmdb-searchbar-content ">
                     <FontAwesome className="rmdb-fa-search" name="search" size="2x" />
                     <input 
                         type="text"
