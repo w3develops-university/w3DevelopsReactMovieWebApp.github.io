@@ -8,7 +8,6 @@ import Spinner from '../elements/Spinner/Spinner';
 import LoadMoreBtn from '../elements/LoadMoreBtn/LoadMoreBtn';
 import './Home.css';
 
-
 class Home extends Component {
     state = {
         movies: [],
@@ -34,12 +33,11 @@ class Home extends Component {
             searchTerm
         })
 
-        if(searchTerm ===''){
-            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`
+        if (searchTerm === "") {
+            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
         } else {
-            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`
+            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${searchTerm}`;
         }
-
         this.fetchItems(endpoint);
     }
 
@@ -48,12 +46,12 @@ class Home extends Component {
         this.setState({ loading: true })
 
         if (this.state.searchTerm === '') {
-            endpoint = `${API_URL}movie/popular?api_key:${API_KEY}&language=en-US&page${this.state.currentPage + 1}`;
+            endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page${this.state.currentPage + 1}`;
         } else {
-            endpoint = `${API_URL}search/movie?api_key:${API_KEY}&language=en-US&query=${this.state.searchTerm}&page=${this.state.currentPage + 1}`;
+            endpoint = `${API_URL}search/movie?api_key=${API_KEY}&language=en-US&query=${this.state.searchTerm}&page=${this.state.currentPage + 1}`;
+        }
             this.fetchItems(endpoint);
         }
-    }
 
     fetchItems = (endpoint) => {
         fetch(endpoint)
@@ -63,7 +61,7 @@ class Home extends Component {
                 movies: [...this.state.movies, ...result.results],
                 heroImage: this.state.heroImage || result.results[0],
                 loading: false,
-                currentPage: result.pages,
+                currentPage: result.page,
                 totalPages: result.total_pages
             })
         })
@@ -79,30 +77,27 @@ class Home extends Component {
                 text={this.state.heroImage.overview} />
                 <SearchBar callback={this.searchItems} />
             </div> : null }
-            
             <div className="rmdb-home-grid">
                 <FourColGrid
                     header={this.state.searchTerm ? 'Search Result' : 'Popular Movies'}
                     loading= {this.state.loading} 
                 > 
-
-                    {this.state.movies.map( (element, i) => {
-                        return <MovieThumb 
-                                    key={i}
-                                    clickable={true}
-                                    image={element.poster_path ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}` : './images/no_image.jpg'}
-                                    movieId={element.id}
-                                    movieName={element.original_title}
-                                />
-                    })}
-                
+                    {this.state.movies.map( (element, i) => (
+                        <MovieThumb 
+                            key={i}
+                            clickable={true}
+                            image={element.poster_path ? `${IMAGE_BASE_URL}${POSTER_SIZE}${element.poster_path}` : './images/no_image.jpg'}
+                            movieId={element.id}
+                            movieName={element.original_title}
+                        />
+                    ))}
                 </FourColGrid>
                 {this.state.loading ? <Spinner /> : null}
                 {(this.state.currentPage <= this.state.totalPages && !this.state.loading) ? 
                     <LoadMoreBtn text="Load More" onClick={this.loadMoreItems} />
-                    : null}
+                    : null
+                }
             </div>
-
         </div>
         )
     }
